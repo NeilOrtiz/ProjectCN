@@ -1,14 +1,14 @@
 package network;
 
 public class Parent {
-    public int myID;
+    public String myID;
     public int duration;
-    public int dstID;
+    public String dstID;
     public String msg;
     public int ng1;
     public int ng2;
 
-    public Parent (int myID, int duration,int dstID, String msg, int ng1, int ng2) {
+    public Parent (String myID, int duration,String dstID, String msg, int ng1, int ng2) {
         this.myID=myID;
         this.duration=duration;
         this.dstID=dstID;
@@ -19,22 +19,26 @@ public class Parent {
 
 
     public static void main (String[] args) {
-        int myID,duration,dstID,ng1,ng2;
-        String msg;
+        int duration,ng1,ng2;
+        String msg,myID,dstID;
         
-        if (args.length!=5) {
+        if (args.length!=6) {
 			System.err.println("Usage: java -jar ProjectCN/dist/Parent.jar <id> <duration> <id dst> <msg> <id's neighboors>");
 			System.exit(1);
         }
 
-        myID=Integer.parseInt(args[0]);
+        myID=args[0];
         duration= Integer.parseInt(args[1]);
-        dstID=Integer.parseInt(args[3]);
-        msg=args[4];
-        ng1=Integer.parseInt(args[5]);
-        ng2=Integer.parseInt(args[6]);
+        dstID=args[2];
+        msg=args[3];
+        ng1=Integer.parseInt(args[4]);
+        ng2=Integer.parseInt(args[5]);
 
         Parent dad = new Parent(myID, duration, dstID, msg, ng1, ng2);
+
+        Transport transport = new Transport(dad);
+
+        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
 
     }
 
