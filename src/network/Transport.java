@@ -12,7 +12,8 @@ public class Transport {
 
     public void transport_send_string(String srcId,String dstID, String msg){
         byte[] frame = this.data_messages(srcId, dstID, msg);
-        this.printBytes(frame);
+        //System.out.println("msg size: "+msg.getBytes().length);
+        //this.printBytes(frame);
 
     }
 
