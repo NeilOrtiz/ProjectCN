@@ -3,33 +3,55 @@ package network;
 public class Transport {
     private Parent dad;
     private int secData;
+    private Networks networks;
+    public static final int WINDOW_SIZE=25;
 
 
     public Transport (Parent dad) {
         this.dad=dad;
-        this.secData=12;
+        this.secData=0;
+        this.networks=new Networks(dad);
     }
 
     public void transport_send_string(String srcId,String dstID, String msg){
-        char[] frame = this.data_messages(srcId, dstID, msg);
-        //System.out.println("msg size: "+msg.getBytes().length);
-        //this.printBytes(frame);
+        
+        int sizeMsg=msg.length();
+        int numMsg=(int)Math.ceil((double)sizeMsg/25d);
+        char[] msg_arr=msg.toCharArray();
 
-        for (char x:frame) {
-            System.out.print(x);
+        if (sizeMsg<=WINDOW_SIZE) {
+
+            char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
+            secData++;
+            networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));  
+        } else {
+            //Split msg
+            int offset=0;
+            for (int i=1;i<=numMsg;i++) {
+                char[] pmsg=new char[25];
+                for (int j=0;j<=24;j++) {
+                    try{
+                        pmsg[j]=msg_arr[offset];
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+						break;
+                    }
+                    offset++;
+                }
+                char[] frame = this.data_messages(srcId, dstID, pmsg);
+                secData++;
+                networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));
+            }
         }
-        System.out.println("");
-
     }
 
     private void transport_layer_msg(int srcId,int dstID, String msg){
         //TODO: transport_layer_msg()
     }
 
-    private char[] data_messages(String srcId,String dstID, String msg){
+    private char[] data_messages(String srcId,String dstID, char[] msg){
 
         char[] msgs=new char[30];
-        byte[] frame=new byte[30];
+        //byte[] frame=new byte[30];
         
         msgs[0]='d';
         msgs[1]=srcId.charAt(0);
@@ -38,14 +60,15 @@ public class Transport {
             msgs[3]='0';
             msgs[4]=Integer.toString(secData).charAt(0) ;
         } else {
-            double part=secData/10d;
-            long iPart=(long)part;
-            int  fPart=(int)Math.ceil(((part-(double)iPart)*10d));
+            String ssecData=Integer.toString(secData);
+            char[] cssecData=ssecData.toCharArray();
+            int iPart=Integer.parseInt(Character.toString(cssecData[0]));
+            int fPart=Integer.parseInt(Character.toString(cssecData[1]));
             msgs[3]=Long.toString(iPart).charAt(0) ;
             msgs[4]=Integer.toString(fPart).charAt(0);
         }
 
-        char[] msg_arr=msg.toCharArray();
+        char[] msg_arr=msg;
 
         int counter=5;
         for (char x:msg_arr) {
