@@ -23,25 +23,33 @@ public class Transport {
 
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             secData++;
-            networks.network_receive_from_transport(frame, msg_arr.length, Integer.parseInt(dstID));  
+            networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));  
         } else {
             //Split msg
             int offset=0;
             int len=25;
             for (int i=1;i<=numMsg;i++) {
-                char[] pmsg=new char[25];
+                char[] pmsg=new char[WINDOW_SIZE];
+                char[] nmsg=null;
                 for (int j=0;j<=24;j++) {
+                    len=j;
+                    nmsg=new char[len];
                     try{
                         pmsg[j]=msg_arr[offset];
+                        for (int k=0;k<=(len-1);k++) {
+                            nmsg[k]=pmsg[k];
+                        }
                     } catch (ArrayIndexOutOfBoundsException ex) {
-                        len=j;
+                        for (int k=0;k<=(len-1);k++) {
+                            nmsg[k]=pmsg[k];
+                        }
                         break;
                     }
                     offset++;
                 }
-                char[] frame = this.data_messages(srcId, dstID, pmsg);
+                char[] frame = this.data_messages(srcId, dstID, nmsg);
                 secData++;
-                networks.network_receive_from_transport(frame, len, Integer.parseInt(dstID));
+                networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));
             }
         }
     }
@@ -52,7 +60,10 @@ public class Transport {
 
     private char[] data_messages(String srcId,String dstID, char[] msg){
 
-        char[] msgs=new char[30];
+        int len=msg.length;
+        char[] msgs=new char[len+5];
+        //char [] frame=new char[len];
+
         //byte[] frame=new byte[30];
         
         msgs[0]='d';
@@ -77,6 +88,10 @@ public class Transport {
             msgs[counter]=x;
             counter++;
         }
+        // for (char x:msg_arr) {
+        //     msgs[counter]=x;
+        //     counter++;
+        // }
 
         // frame[0]=100;
         // frame=this.pushBytes(frame, srcId, 1);//byte source id (from "0" up to "9")
