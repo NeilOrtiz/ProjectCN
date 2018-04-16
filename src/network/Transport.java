@@ -23,7 +23,7 @@ public class Transport {
 
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             secData++;
-            networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));  
+            networks.network_receive_from_transport(frame, msg_arr.length, Integer.parseInt(dstID),dad.myID);  
         } else {
             //Split msg
             int offset=0;
@@ -31,7 +31,7 @@ public class Transport {
             for (int i=1;i<=numMsg;i++) {
                 char[] pmsg=new char[WINDOW_SIZE];
                 char[] nmsg=null;
-                for (int j=0;j<=24;j++) {
+                for (int j=0;j<=WINDOW_SIZE;j++) {
                     len=j;
                     nmsg=new char[len];
                     try{
@@ -49,7 +49,7 @@ public class Transport {
                 }
                 char[] frame = this.data_messages(srcId, dstID, nmsg);
                 secData++;
-                networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));
+                networks.network_receive_from_transport(frame, nmsg.length, Integer.parseInt(dstID),dad.myID);
             }
         }
     }
