@@ -13,6 +13,6 @@ public class Networks {
         for (char x:msg) {
             System.out.print(x);
         }
-        System.out.println("");
+        System.out.println("    Length msg: "+len);
     }
 }

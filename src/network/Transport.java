@@ -23,23 +23,25 @@ public class Transport {
 
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             secData++;
-            networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));  
+            networks.network_receive_from_transport(frame, msg_arr.length, Integer.parseInt(dstID));  
         } else {
             //Split msg
             int offset=0;
+            int len=25;
             for (int i=1;i<=numMsg;i++) {
                 char[] pmsg=new char[25];
                 for (int j=0;j<=24;j++) {
                     try{
                         pmsg[j]=msg_arr[offset];
                     } catch (ArrayIndexOutOfBoundsException ex) {
-						break;
+                        len=j;
+                        break;
                     }
                     offset++;
                 }
                 char[] frame = this.data_messages(srcId, dstID, pmsg);
                 secData++;
-                networks.network_receive_from_transport(frame, frame.length, Integer.parseInt(dstID));
+                networks.network_receive_from_transport(frame, len, Integer.parseInt(dstID));
             }
         }
     }
