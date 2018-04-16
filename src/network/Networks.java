@@ -7,7 +7,7 @@ public class Networks {
 
     public Networks (Parent dad) {
         this.dad=dad;
-        this.secData=12;
+        this.secData=00;
     }
 
     public void network_receive_from_transport(char[] msg,int len, int dest,String srcId){
@@ -26,7 +26,7 @@ public class Networks {
 
     private byte[] n_data_messages(String srcId,int dest,char[] msg,int len) {
         int leng=msg.length;
-        byte[] frame=new byte[leng+4];
+        byte[] frame=new byte[leng+6];
 
         //int srcid=Integer.parseInt(srcId);
         frame[0]=srcId.getBytes()[0];
@@ -48,7 +48,25 @@ public class Networks {
             frame[2]=Integer.toString(iPart).getBytes()[0];
             frame[3]=Integer.toString(fPart).getBytes()[0];
         }
-        frame[4]=Integer.toString(len).getBytes()[0];
+        
+        if (leng<10) {
+            frame[4]="0".getBytes()[0];
+            frame[5]=Integer.toString(leng).getBytes()[0];
+        } else {
+            String sleng=Integer.toString(leng);
+            char[] csleng=sleng.toCharArray();
+            int iPart=Integer.parseInt(Character.toString(csleng[0]));
+            int fPart=Integer.parseInt(Character.toString(csleng[1]));
+            frame[4]=Integer.toString(iPart).getBytes()[0];
+            frame[5]=Integer.toString(fPart).getBytes()[0];
+        }
+
+        int counter=6;
+        for (char x:msg) {
+            frame[counter]=Character.toString(x).getBytes()[0];
+            counter++;
+        }
+
         System.out.println("len: "+leng);
         System.out.println("frame.length: "+frame.length);
         this.printBytes(frame);
