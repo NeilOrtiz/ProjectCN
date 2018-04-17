@@ -23,7 +23,6 @@ public class Networks {
         byte[] frame=this.n_data_messages(srcId, dest, msg,len);
         int next_hop=this.nextHop(dest);
         //System.out.println("[network_receive_from_transport] next_hop: "+next_hop);
-
     }
 
     private byte[] n_data_messages(String srcId,int dest,char[] msg,int len) {
@@ -68,7 +67,7 @@ public class Networks {
             frame[counter]=Character.toString(x).getBytes()[0];
             counter++;
         }
-
+        this.secData++;
         //System.out.println("len: "+leng);
         //System.out.println("frame.length: "+frame.length);
         this.printBytes(frame);
