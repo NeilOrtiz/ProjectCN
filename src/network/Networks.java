@@ -75,18 +75,18 @@ public class Networks {
 
     }
 
-    private byte[] pushBytes(byte[] frame, String input,int offset,int len){
-        byte[] temp=new byte[len+input.length()];
-        byte[] bytesFrame=input.getBytes();
+    // private byte[] pushBytes(byte[] frame, String input,int offset,int len){
+    //     byte[] temp=new byte[len+input.length()];
+    //     byte[] bytesFrame=input.getBytes();
         
-        int counter=0;
-        for (int i=offset;i<(bytesFrame.length+offset);i++) {
-        	frame[i]=bytesFrame[counter];
-            counter++;
-        }
-        temp=frame;
-        return temp;
-    }
+    //     int counter=0;
+    //     for (int i=offset;i<(bytesFrame.length+offset);i++) {
+    //     	frame[i]=bytesFrame[counter];
+    //         counter++;
+    //     }
+    //     temp=frame;
+    //     return temp;
+    // }
 
     private void printBytes(byte[] frame) {
 
@@ -102,5 +102,11 @@ public class Networks {
         }
         System.out.println("");
 
+    }
+
+    private int next_hop(int dest){
+        int temp=-1;
+
+        return temp;
     }
 }

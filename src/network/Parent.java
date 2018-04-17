@@ -1,29 +1,34 @@
 package network;
 
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.ArrayList;
+
 public class Parent {
     public String myID;
     public int duration;
     public String dstID;
     public String msg;
-    public int ng1;
-    public int ng2;
+    public String ngbs;
+    public Hashtable<Integer,Integer> routingTable;
 
-    public Parent (String myID, int duration,String dstID, String msg, int ng1, int ng2) {
+    public Parent (String myID, int duration,String dstID, String msg, String ngbs) {
         this.myID=myID;
         this.duration=duration;
         this.dstID=dstID;
         this.msg=msg;
-        this.ng1=ng1;
-        this.ng2=ng2;
+        this.ngbs=ngbs;
+        this.routingTable=new Hashtable<Integer,Integer>();
     }
 
 
     public static void main (String[] args) {
-        int duration,ng1,ng2;
-        String msg,myID,dstID;
+        int duration;
+        String msg,myID,dstID,ngb;
+       
         
-        if (args.length!=6) {
-			System.err.println("Usage: java -jar ProjectCN/dist/Parent.jar <id> <duration> <id dst> <msg> <id's neighboors>");
+        if (args.length!=5) {
+			System.err.println("Usage: java -jar ProjectCN/dist/Parent.jar <id> <duration> <id dst> <msg> <id's neighboors: \"id1,id2\">");
 			System.exit(1);
         }
 
@@ -31,10 +36,29 @@ public class Parent {
         duration= Integer.parseInt(args[1]);
         dstID=args[2];
         msg=args[3];
-        ng1=Integer.parseInt(args[4]);
-        ng2=Integer.parseInt(args[5]);
+        ngb=args[4];
+        // if (!args[5].isEmpty()){
+        //     ng2=Integer.parseInt(args[5]);
+        // } else {
+        //     ng2=-1;
+        // }
+        
 
-        Parent dad = new Parent(myID, duration, dstID, msg, ng1, ng2);
+        Parent dad = new Parent(myID, duration, dstID, msg, ngb);
+        //dad.routingTable.put();
+        
+        String[] ngbs;
+        ngbs=ngb.split(",");
+        for (String x:ngbs) {
+            dad.routingTable.put(Integer.parseInt(x),Integer.parseInt(x));
+        }
+        
+
+        // Set<Integer> keys= dad.routingTable.keySet();
+        // for (int key:keys) {
+        //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
+        // }
+
 
         Transport transport = new Transport(dad);
 
