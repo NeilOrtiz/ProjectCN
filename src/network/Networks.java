@@ -21,6 +21,8 @@ public class Networks {
         //System.out.println("srcId: "+srcId);
 
         byte[] frame=this.n_data_messages(srcId, dest, msg,len);
+        int next_hop=this.nextHop(dest);
+        //System.out.println("[network_receive_from_transport] next_hop: "+next_hop);
 
     }
 
@@ -67,8 +69,8 @@ public class Networks {
             counter++;
         }
 
-        System.out.println("len: "+leng);
-        System.out.println("frame.length: "+frame.length);
+        //System.out.println("len: "+leng);
+        //System.out.println("frame.length: "+frame.length);
         this.printBytes(frame);
 
         return frame;
@@ -104,8 +106,10 @@ public class Networks {
 
     }
 
-    private int next_hop(int dest){
+    private int nextHop(int dest){
         int temp=-1;
+
+        temp=dad.routingTable.get(dest);
 
         return temp;
     }
