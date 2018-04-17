@@ -23,12 +23,6 @@ public class Parent {
         this.routingTable=new Hashtable<Integer,Integer>();
     }
 
-
-    public static void test() {
-
-    }
-
-    
     
     public static void main (String[] args) {
         int duration;
@@ -56,13 +50,24 @@ public class Parent {
         //dad.routingTable.put();
         
         //Populate the Routing Table
-        String[] ngbs;
-        ngbs=ngb.split(",");
-        for (String x:ngbs) {
-            dad.routingTable.put(Integer.parseInt(x),Integer.parseInt(x));
-        }
         
-        //Create Channels
+        routingTablePopulate(dad);
+        channelsCreation(dad);
+        
+        // Set<Integer> keys= dad.routingTable.keySet();
+        // for (int key:keys) {
+        //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
+        // }
+
+        Transport transport = new Transport(dad);
+
+        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+
+    }
+
+    public static void channelsCreation( Parent dad) {
+        String[] ngbs;
+        ngbs=dad.ngbs.split(",");
         for (String x:ngbs) {
             String fileName=".//"+"from"+dad.myID+"to"+x+".txt";
             File file = new File(fileName);
@@ -74,6 +79,7 @@ public class Parent {
                     System.out.println("File already exists.");
                 }
             } catch (IOException ex) {
+                System.err.println("[ERROR] File couldn't be created");
                 ex.printStackTrace();
             }
 
@@ -81,17 +87,14 @@ public class Parent {
 
         }
 
+    }
 
-        // Set<Integer> keys= dad.routingTable.keySet();
-        // for (int key:keys) {
-        //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
-        // }
-
-
-        Transport transport = new Transport(dad);
-
-        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
-
+    public static void routingTablePopulate(Parent dad) {
+        String[] ngbs;
+        ngbs=dad.ngbs.split(",");
+        for (String x:ngbs) {
+            dad.routingTable.put(Integer.parseInt(x),Integer.parseInt(x));
+        }
     }
 
 }
