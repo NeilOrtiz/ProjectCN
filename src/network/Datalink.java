@@ -12,6 +12,9 @@ public class Datalink {
         System.out.println("[Datalink] dest: "+dest);
 
         String fileName=".//"+"from"+dad.myID+"to"+dest+".txt";
+        Writer write = new Writer(fileName);
+
+        write.writeFile();
 
     }
 }
