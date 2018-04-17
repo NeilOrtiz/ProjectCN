@@ -3,11 +3,13 @@ package network;
 public class Networks {
     private Parent dad;
     private int secData;
+    private Datalink datalink;
 
 
     public Networks (Parent dad) {
         this.dad=dad;
         this.secData=00;
+        this.datalink=new Datalink(dad);
     }
 
     public void network_receive_from_transport(char[] msg,int len, int dest,String srcId){
@@ -22,6 +24,7 @@ public class Networks {
 
         byte[] frame=this.n_data_messages(srcId, dest, msg,len);
         int next_hop=this.nextHop(dest);
+        datalink.datalink_receive_from_network(frame, len, next_hop);
         //System.out.println("[network_receive_from_transport] next_hop: "+next_hop);
     }
 
@@ -76,19 +79,6 @@ public class Networks {
 
     }
 
-    // private byte[] pushBytes(byte[] frame, String input,int offset,int len){
-    //     byte[] temp=new byte[len+input.length()];
-    //     byte[] bytesFrame=input.getBytes();
-        
-    //     int counter=0;
-    //     for (int i=offset;i<(bytesFrame.length+offset);i++) {
-    //     	frame[i]=bytesFrame[counter];
-    //         counter++;
-    //     }
-    //     temp=frame;
-    //     return temp;
-    // }
-
     private void printBytes(byte[] frame) {
 
         for (byte x:frame) {
@@ -112,4 +102,16 @@ public class Networks {
 
         return temp;
     }
+    // private byte[] pushBytes(byte[] frame, String input,int offset,int len){
+    //     byte[] temp=new byte[len+input.length()];
+    //     byte[] bytesFrame=input.getBytes();
+        
+    //     int counter=0;
+    //     for (int i=offset;i<(bytesFrame.length+offset);i++) {
+    //     	frame[i]=bytesFrame[counter];
+    //         counter++;
+    //     }
+    //     temp=frame;
+    //     return temp;
+    // }
 }

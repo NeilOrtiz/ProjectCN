@@ -3,6 +3,8 @@ package network;
 import java.util.Hashtable;
 import java.util.Set;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 public class Parent {
     public String myID;
@@ -22,6 +24,12 @@ public class Parent {
     }
 
 
+    public static void test() {
+
+    }
+
+    
+    
     public static void main (String[] args) {
         int duration;
         String msg,myID,dstID,ngb;
@@ -47,12 +55,32 @@ public class Parent {
         Parent dad = new Parent(myID, duration, dstID, msg, ngb);
         //dad.routingTable.put();
         
+        //Populate the Routing Table
         String[] ngbs;
         ngbs=ngb.split(",");
         for (String x:ngbs) {
             dad.routingTable.put(Integer.parseInt(x),Integer.parseInt(x));
         }
         
+        //Create Channels
+        for (String x:ngbs) {
+            String fileName=".//"+"from"+dad.myID+"to"+x+".txt";
+            File file = new File(fileName);
+            
+            try {
+                if (file.createNewFile()){
+                    System.out.println("File is created!");
+                }else{
+                    System.out.println("File already exists.");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            //System.out.println("[Parent] fileName: "+fileName);
+
+        }
+
 
         // Set<Integer> keys= dad.routingTable.keySet();
         // for (int key:keys) {
