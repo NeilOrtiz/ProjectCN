@@ -23,6 +23,7 @@ public class Transport {
         //int cols=(int)Math.ceil((double)numMsg/2);
         ArrayList<char[]> channel0 = new ArrayList<char[]>(4);
         ArrayList<char[]> channel1 = new ArrayList<char[]>(4);
+        boolean llego=false;
 
         if (sizeMsg<=WINDOW_SIZE) {
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
@@ -32,6 +33,23 @@ public class Transport {
                 dad.sb[0]=(dad.sb[0]+1)%2;
                 networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
             }
+
+            while (!llego) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getStackTrace());
+                }
+
+                if (dad.sb[0]==dad.ab[0]) {
+                    llego=true;
+                } else {
+                    networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
+                }
+
+            }
+
+            
             
               
         } else {
