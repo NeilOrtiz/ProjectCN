@@ -12,20 +12,10 @@ public class Networks {
         this.datalink=new Datalink(dad);
     }
 
-    public void network_receive_from_transport(char[] msg,int len, int dest,String srcId){
-        // for (char x:msg) {
-        //     System.out.print(x);
-        // }
-        // System.out.println("    Length msg: "+len);
-        //int srcId=(int)msg[1];
-        //int dstID=(int)msg[2];
-
-        //System.out.println("srcId: "+srcId);
-
-        byte[] frame=this.n_data_messages(srcId, dest, msg,len);
+    public void network_receive_from_transport(int channel, int sb, char[] msg,int dest,String srcId){
+        byte[] frame=this.n_data_messages(srcId, dest, msg,msg.length);
         int next_hop=this.nextHop(dest);
-        datalink.datalink_receive_from_network(frame, len, next_hop);
-        //System.out.println("[network_receive_from_transport] next_hop: "+next_hop);
+        datalink.datalink_receive_from_network(channel,sb,frame, next_hop);
     }
 
     private byte[] n_data_messages(String srcId,int dest,char[] msg,int len) {
@@ -73,7 +63,7 @@ public class Networks {
         this.secData++;
         //System.out.println("len: "+leng);
         //System.out.println("frame.length: "+frame.length);
-        this.printBytes(frame);
+        //this.printBytes(frame);
 
         return frame;
 

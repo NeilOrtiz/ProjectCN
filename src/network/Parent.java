@@ -13,6 +13,8 @@ public class Parent {
     public String msg;
     public String ngbs;
     public Hashtable<Integer,Integer> routingTable;
+    public int[] sb;
+    public int[] ab;
 
     public Parent (String myID, int duration,String dstID, String msg, String ngbs) {
         this.myID=myID;
@@ -21,6 +23,8 @@ public class Parent {
         this.msg=msg;
         this.ngbs=ngbs;
         this.routingTable=new Hashtable<Integer,Integer>();
+        this.sb=new int[] {0,0};
+        this.ab=new int[] {0,0};
     }
 
     
@@ -74,9 +78,9 @@ public class Parent {
             
             try {
                 if (file.createNewFile()){
-                    System.out.println("File is created!");
+                    //System.out.println("File is created!");
                 }else{
-                    System.out.println("File already exists.");
+                    //System.out.println("File already exists.");
                 }
             } catch (IOException ex) {
                 System.err.println("[ERROR] File couldn't be created");

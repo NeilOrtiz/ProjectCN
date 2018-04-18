@@ -1,5 +1,7 @@
 package network;
 
+import java.util.ArrayList;
+
 public class Transport {
     private Parent dad;
     private int secData;
@@ -18,12 +20,20 @@ public class Transport {
         int sizeMsg=msg.length();
         int numMsg=(int)Math.ceil((double)sizeMsg/25d);
         char[] msg_arr=msg.toCharArray();
+        //int cols=(int)Math.ceil((double)numMsg/2);
+        ArrayList<char[]> channel0 = new ArrayList<char[]>(4);
+        ArrayList<char[]> channel1 = new ArrayList<char[]>(4);
 
         if (sizeMsg<=WINDOW_SIZE) {
-
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
+            channel0.add(frame);
             secData++;
-            networks.network_receive_from_transport(frame, msg_arr.length, Integer.parseInt(dstID),dad.myID);  
+            if (dad.sb[0]==dad.ab[0]) {
+                dad.sb[0]=(dad.sb[0]+1)%2;
+                networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
+            }
+            
+              
         } else {
             //Split msg
             int offset=0;
@@ -48,10 +58,44 @@ public class Transport {
                     offset++;
                 }
                 char[] frame = this.data_messages(srcId, dstID, nmsg);
+
+                if ((i%2)!=0) {
+                    channel0.add(frame);
+                } else {
+                    channel1.add(frame);
+                }
                 secData++;
-                networks.network_receive_from_transport(frame, nmsg.length, Integer.parseInt(dstID),dad.myID);
+                //networks.network_receive_from_transport(frame, nmsg.length, Integer.parseInt(dstID),dad.myID);
             }
+            // System.out.println("[transport_send_string] longitud channel0: "+channel0.size());
+            // System.out.println("CHANNEL 0");
+            // for (char[] x:channel0) {
+            //     //System.out.println("[transport_send_string] channel0: "+x);
+            //     for (char y:x) {
+            //         System.out.print(y);
+            //     }
+            //     System.out.println("");
+            // }
+            // System.out.println("");
+            // System.out.println("CHANNEL 1");
+            // for (char[] x:channel1) {
+            //     //System.out.println("[transport_send_string] channel0: "+x);
+            //     for (char y:x) {
+            //         System.out.print(y);
+            //     }
+            //     System.out.println("");
+            // }
         }
+        // System.out.println("[transport_send_string] longitud channel0: "+channel0.size());
+        // System.out.println("CHANNEL 0");
+        // for (char[] x:channel0) {
+        //     //System.out.println("[transport_send_string] channel0: "+x);
+        //     for (char y:x) {
+        //         System.out.print(y);
+        //     }
+        //     System.out.println("");
+        // }
+        // System.out.println("");
     }
 
     private void transport_layer_msg(int srcId,int dstID, String msg){
@@ -62,9 +106,6 @@ public class Transport {
 
         int len=msg.length;
         char[] msgs=new char[len+5];
-        //char [] frame=new char[len];
-
-        //byte[] frame=new byte[30];
         
         msgs[0]='d';
         msgs[1]=srcId.charAt(0);
@@ -88,23 +129,6 @@ public class Transport {
             msgs[counter]=x;
             counter++;
         }
-        // for (char x:msg_arr) {
-        //     msgs[counter]=x;
-        //     counter++;
-        // }
-
-        // frame[0]=100;
-        // frame=this.pushBytes(frame, srcId, 1);//byte source id (from "0" up to "9")
-        // frame=this.pushBytes(frame, dstID, 2);//byte destination id (from "0" up to "9") 
-        
-        // if (secData<10) { //byte sequence number (from "00" to "99")
-        //     frame=this.pushBytes(frame, "0", 3);
-        //     frame=this.pushBytes(frame,Integer.toString(secData), 4); 
-        // } else {
-        //     frame=this.pushBytes(frame,Integer.toString(secData), 3);
-        // }
-
-        // frame=this.pushBytes(frame,msg,5);
 
         return msgs;
     }

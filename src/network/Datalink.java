@@ -7,11 +7,9 @@ public class Datalink {
         this.dad=dad;
     }
 
-    public void datalink_receive_from_network(byte[] msg, int len, int next_hop) {
+    public void datalink_receive_from_network(int channel, int sb,byte[] msg, int next_hop) {
         char dest=(char) msg[1];
         String type;
-        
-
         String fileName=".//"+"from"+dad.myID+"to"+dest+".txt";
         Writer write = new Writer(fileName);
 
@@ -27,7 +25,7 @@ public class Datalink {
         String secNum=Character.toString(secNum1)+Character.toString(secNum2);
         char[] ntwMsg=this.getntwMsg(msg);
         String msgStuffing=this.stuffing(ntwMsg);
-        write.writeFile(type,0,secNum,msgStuffing);
+        write.writeFile(type,channel,secNum,msgStuffing);
     }
 
     public char[] getntwMsg(byte[] msg){
