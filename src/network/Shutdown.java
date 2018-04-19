@@ -15,6 +15,7 @@ public class Shutdown extends Thread {
         } catch (InterruptedException ex) {
             System.out.println(ex.getStackTrace());
         }
+        
         dad.terminate();
     }
 }

@@ -28,6 +28,10 @@ public class Datalink {
         write.writeFile(type,channel,secNum,msgStuffing);
     }
 
+    public void datalink_receive_from_channel(){
+        
+    }
+
     public char[] getntwMsg(byte[] msg){
         char[] temp=new char[msg.length-6];
         int counter=0;

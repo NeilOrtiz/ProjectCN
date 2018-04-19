@@ -46,8 +46,9 @@ public class Transport {
                 } else {
                     networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
                 }
-
             }
+
+            System.out.println("5 seconds to finish");
 
             
             
