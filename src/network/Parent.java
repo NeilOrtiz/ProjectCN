@@ -1,8 +1,8 @@
 package network;
 
 import java.util.Hashtable;
-import java.util.Set;
-import java.util.ArrayList;
+//import java.util.Set;
+//import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,8 +15,9 @@ public class Parent {
     public Hashtable<Integer,Integer> routingTable;
     public int[] sb;
     public int[] ab;
+    public int end;
 
-    public Parent (String myID, int duration,String dstID, String msg, String ngbs) {
+    public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end) {
         this.myID=myID;
         this.duration=duration;
         this.dstID=dstID;
@@ -25,6 +26,7 @@ public class Parent {
         this.routingTable=new Hashtable<Integer,Integer>();
         this.sb=new int[] {0,0};
         this.ab=new int[] {0,0};
+        this.end=end;
     }
 
     
@@ -49,8 +51,10 @@ public class Parent {
         //     ng2=-1;
         // }
         
-
-        Parent dad = new Parent(myID, duration, dstID, msg, ngb);
+        
+        Parent dad = new Parent(myID, duration, dstID, msg, ngb,duration);
+        Shutdown shutdown=new Shutdown(dad);
+        shutdown.start();
         //dad.routingTable.put();
         
         //Populate the Routing Table
@@ -99,6 +103,10 @@ public class Parent {
         for (String x:ngbs) {
             dad.routingTable.put(Integer.parseInt(x),Integer.parseInt(x));
         }
+    }
+
+    public void terminate() {
+        System.exit(1);
     }
 
 }
