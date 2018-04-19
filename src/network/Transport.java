@@ -34,25 +34,22 @@ public class Transport {
                 networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
             }
 
-            while (!llego) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    System.out.println(ex.getStackTrace());
-                }
+            // while (!llego) {
+            //     try {
+            //         Thread.sleep(5000);
+            //     } catch (InterruptedException ex) {
+            //         System.out.println(ex.getStackTrace());
+            //     }
 
-                if (dad.sb[0]==dad.ab[0]) {
-                    llego=true;
-                } else {
-                    networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
-                }
-            }
+            //     if (dad.sb[0]==dad.ab[0]) {
+            //         llego=true;
+            //     } else {
+            //         networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
+            //     }
+            // }
 
             System.out.println("5 seconds to finish");
 
-            
-            
-              
         } else {
             //Split msg
             int offset=0;

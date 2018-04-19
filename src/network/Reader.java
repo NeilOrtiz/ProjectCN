@@ -22,16 +22,18 @@ public class Reader {
             String str = "SharedFile";
             BufferedReader ReadFile = new BufferedReader(new FileReader(this.pathname));
             int temp=0;
-
+            System.out.println("[readFile] 1");
             while ((str = ReadFile.readLine()) != null) {
                 ++temp;
+                System.out.println("[readFile] 2");
                 if (temp > count) {
-                    String filePath = "node"+dad.myID+"received";
+                    String filePath = "node"+dad.myID+"received"+".txt";
                     BufferedWriter WriteFile = new BufferedWriter(new FileWriter(filePath,true));
                     WriteFile.write(str);
-                    WriteFile.write("\n");
+                    WriteFile.write("\r\n");
                     WriteFile.close();
                 }
+                count = temp;
             }
             ReadFile.close();
             

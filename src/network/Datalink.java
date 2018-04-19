@@ -29,6 +29,15 @@ public class Datalink {
     }
 
     public void datalink_receive_from_channel(){
+
+        String[] ngbs;
+        ngbs=dad.ngbs.split(",");
+
+        for (String x:ngbs) {
+            String pathname="from"+x+"to"+dad.myID+".txt";
+            Reader reader=new Reader(pathname, dad);
+            reader.readFile();
+        }
         
     }
 

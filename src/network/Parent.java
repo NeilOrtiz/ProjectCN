@@ -66,11 +66,9 @@ public class Parent {
         // for (int key:keys) {
         //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
         // }
+        skeleton(dad);
 
-        Transport transport = new Transport(dad);
-
-        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
-
+        
     }
 
     public static void channelsCreation( Parent dad) {
@@ -107,6 +105,24 @@ public class Parent {
 
     public void terminate() {
         System.exit(1);
+    }
+
+    public static void skeleton(Parent dad) {
+
+        Transport transport = new Transport(dad);
+        Datalink datalink=new Datalink(dad);
+        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+        
+        for (int i=0;i<=dad.end;i++){
+            datalink.datalink_receive_from_channel();
+            
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getStackTrace());
+            }
+        }
     }
 
 }
