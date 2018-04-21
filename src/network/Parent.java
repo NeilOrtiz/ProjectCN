@@ -142,6 +142,7 @@ public class Parent {
         
         for (int i=0;i<=dad.end;i++){
             datalink.datalink_receive_from_channel();
+            //System.out.println("[Parent] life left: "+(dad.end-i));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {

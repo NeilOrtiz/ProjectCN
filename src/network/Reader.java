@@ -16,8 +16,9 @@ public class Reader {
         this.count=0;
     }
 
-    public void readFile(String pathname,Parent dad){
+    public String readFile(String pathname,Parent dad){
 
+        String answer="null";
         try {
             String str = "SharedFile";
             BufferedReader ReadFile = new BufferedReader(new FileReader(pathname));
@@ -27,11 +28,12 @@ public class Reader {
                 ++temp;
                 //System.out.println("[readFile] pathname: "+pathname);
                 if (temp > dad.readOffset.get(pathname)) {
-                    String filePath = "node"+dad.myID+"received"+".txt";
-                    BufferedWriter WriteFile = new BufferedWriter(new FileWriter(filePath,true));
-                    WriteFile.write(str);
-                    WriteFile.write("\r\n");
-                    WriteFile.close();
+                    // String filePath = "node"+dad.myID+"received"+".txt";
+                    // BufferedWriter WriteFile = new BufferedWriter(new FileWriter(filePath,true));
+                    // WriteFile.write(str);
+                    // WriteFile.write("\r\n");
+                    // WriteFile.close();
+                    answer=str;
                 }
             }
             dad.readOffset.replace(pathname, temp);
@@ -40,6 +42,8 @@ public class Reader {
         } catch (Exception e) {
             System.out.println(e + " in readFile()");
         }
+
+        return answer;
     }
 
 }
