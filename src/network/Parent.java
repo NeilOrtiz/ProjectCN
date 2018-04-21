@@ -1,6 +1,7 @@
 package network;
 
 import java.util.Hashtable;
+import java.util.Set;
 //import java.util.Set;
 //import java.util.ArrayList;
 import java.io.File;
@@ -13,6 +14,7 @@ public class Parent {
     public String msg;
     public String ngbs;
     public Hashtable<Integer,Integer> routingTable;
+    public Hashtable<String,Integer> readOffset;
     public int[] sb;
     public int[] ab;
     public int end;
@@ -25,6 +27,7 @@ public class Parent {
         this.msg=msg;
         this.ngbs=ngbs;
         this.routingTable=new Hashtable<Integer,Integer>();
+        this.readOffset=new Hashtable<String,Integer>();
         this.sb=new int[] {0,0};
         this.ab=new int[] {0,0};
         this.end=end;
@@ -79,6 +82,7 @@ public class Parent {
         
         routingTablePopulate(dad);
         channelsCreation(dad);
+        printreadOffset(dad);
         
         // Set<Integer> keys= dad.routingTable.keySet();
         // for (int key:keys) {
@@ -94,6 +98,8 @@ public class Parent {
         ngbs=dad.ngbs.split(",");
         for (String x:ngbs) {
             String fileName=".//"+"from"+dad.myID+"to"+x+".txt";
+            String fileNameRead=".//"+"from"+x+"to"+dad.myID+".txt";
+            dad.readOffset.put(fileNameRead, 0);
             File file = new File(fileName);
             
             try {
@@ -141,6 +147,14 @@ public class Parent {
             } catch (InterruptedException ex) {
                 System.out.println(ex.getStackTrace());
             }
+        }
+    }
+
+    public static void printreadOffset(Parent dad){
+        Set<String> keys=dad.readOffset.keySet();
+
+        for (String key:keys) {
+            System.out.println("[Parent] key: "+key+", value:"+dad.readOffset.get(key));
         }
     }
 

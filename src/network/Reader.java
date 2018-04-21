@@ -25,8 +25,8 @@ public class Reader {
             System.out.println("[readFile] 1");
             while ((str = ReadFile.readLine()) != null) {
                 ++temp;
-                System.out.println("[readFile] 2");
-                if (temp > count) {
+                System.out.println("[readFile] pathname: "+pathname);
+                if (temp > dad.readOffset.get(pathname)) {
                     String filePath = "node"+dad.myID+"received"+".txt";
                     BufferedWriter WriteFile = new BufferedWriter(new FileWriter(filePath,true));
                     WriteFile.write(str);
@@ -34,7 +34,7 @@ public class Reader {
                     WriteFile.close();
                 }
             }
-            count = temp;
+            dad.readOffset.replace(pathname, temp);
             ReadFile.close();
             
         } catch (Exception e) {

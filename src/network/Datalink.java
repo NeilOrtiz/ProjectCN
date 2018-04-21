@@ -37,7 +37,7 @@ public class Datalink {
         Reader reader=new Reader();
 
         for (String x:ngbs) {
-            String pathname="from"+x+"to"+dad.myID+".txt";            
+            String pathname=".//"+"from"+x+"to"+dad.myID+".txt";            
             reader.readFile(pathname, dad);
         }
         
