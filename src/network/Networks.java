@@ -92,6 +92,11 @@ public class Networks {
 
         return temp;
     }
+
+    private void network_receive_from_datalink(char[] msg, int neighbor_id) {
+        //TODO: Networks.network_receive_from_datalink()
+    }
+    
     // private byte[] pushBytes(byte[] frame, String input,int offset,int len){
     //     byte[] temp=new byte[len+input.length()];
     //     byte[] bytesFrame=input.getBytes();
