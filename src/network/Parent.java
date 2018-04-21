@@ -16,8 +16,9 @@ public class Parent {
     public int[] sb;
     public int[] ab;
     public int end;
+    public boolean isMsg;
 
-    public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end) {
+    public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end,boolean isMsg) {
         this.myID=myID;
         this.duration=duration;
         this.dstID=dstID;
@@ -27,24 +28,41 @@ public class Parent {
         this.sb=new int[] {0,0};
         this.ab=new int[] {0,0};
         this.end=end;
+        this.isMsg=isMsg;
     }
 
     
     public static void main (String[] args) {
-        int duration;
-        String msg,myID,dstID,ngb;
+        int duration=-1;
+        String msg=null,myID=null,dstID=null,ngb=null;
+        boolean m=true;
        
         
         if (args.length!=5) {
-			System.err.println("Usage: java -jar ProjectCN/dist/Parent.jar <id> <duration> <id dst> <msg> <id's neighboors: \"id1,id2\">");
-			System.exit(1);
+            
+            if (args[0].equals(args[2])) {
+                myID=args[0];
+                duration= Integer.parseInt(args[1]);
+                dstID=args[2];
+                ngb=args[3];
+                m=false;
+                msg=null;
+                
+            } else {
+                System.err.println("Usage: java -jar ProjectCN/dist/Parent.jar <id> <duration> <id dst> <msg> <id's neighboors: \"id1,id2\">");
+                System.exit(1);
+            }
+			
         }
 
+        if (m) {
         myID=args[0];
         duration= Integer.parseInt(args[1]);
         dstID=args[2];
         msg=args[3];
         ngb=args[4];
+        }
+        
         // if (!args[5].isEmpty()){
         //     ng2=Integer.parseInt(args[5]);
         // } else {
@@ -52,7 +70,7 @@ public class Parent {
         // }
         
         
-        Parent dad = new Parent(myID, duration, dstID, msg, ngb,duration);
+        Parent dad = new Parent(myID, duration, dstID, msg, ngb,duration,m);
         Shutdown shutdown=new Shutdown(dad);
         shutdown.start();
         //dad.routingTable.put();
@@ -111,12 +129,13 @@ public class Parent {
 
         Transport transport = new Transport(dad);
         Datalink datalink=new Datalink(dad);
-        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+        if (dad.isMsg){
+            transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+        }
+        
         
         for (int i=0;i<=dad.end;i++){
             datalink.datalink_receive_from_channel();
-            
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {

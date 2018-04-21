@@ -20,7 +20,6 @@ public class Transport {
         int sizeMsg=msg.length();
         int numMsg=(int)Math.ceil((double)sizeMsg/25d);
         char[] msg_arr=msg.toCharArray();
-        //int cols=(int)Math.ceil((double)numMsg/2);
         ArrayList<char[]> channel0 = new ArrayList<char[]>(4);
         ArrayList<char[]> channel1 = new ArrayList<char[]>(4);
         boolean llego=false;

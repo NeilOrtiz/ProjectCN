@@ -1,5 +1,7 @@
 package network;
 
+import java.io.File;
+
 public class Datalink {
     private Parent dad;
 
@@ -32,11 +34,11 @@ public class Datalink {
 
         String[] ngbs;
         ngbs=dad.ngbs.split(",");
+        Reader reader=new Reader();
 
         for (String x:ngbs) {
-            String pathname="from"+x+"to"+dad.myID+".txt";
-            Reader reader=new Reader(pathname, dad);
-            reader.readFile();
+            String pathname="from"+x+"to"+dad.myID+".txt";            
+            reader.readFile(pathname, dad);
         }
         
     }

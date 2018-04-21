@@ -6,21 +6,21 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 public class Reader {
-    private String pathname;
-    private Parent dad;
+    // private String pathname;
+    // private Parent dad;
     private int count;
 
-    public Reader(String pathname,Parent dad){
-        this.pathname=pathname;
-        this.dad=dad;
+    public Reader(){
+        // this.pathname=pathname;
+        // this.dad=dad;
         this.count=0;
     }
 
-    public void readFile(){
+    public void readFile(String pathname,Parent dad){
 
         try {
             String str = "SharedFile";
-            BufferedReader ReadFile = new BufferedReader(new FileReader(this.pathname));
+            BufferedReader ReadFile = new BufferedReader(new FileReader(pathname));
             int temp=0;
             System.out.println("[readFile] 1");
             while ((str = ReadFile.readLine()) != null) {
@@ -33,8 +33,8 @@ public class Reader {
                     WriteFile.write("\r\n");
                     WriteFile.close();
                 }
-                count = temp;
             }
+            count = temp;
             ReadFile.close();
             
         } catch (Exception e) {
