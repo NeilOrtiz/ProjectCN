@@ -47,7 +47,7 @@ public class Transport {
             //     }
             // }
 
-            System.out.println("5 seconds to finish");
+            //System.out.println("5 seconds to finish");
 
         } else {
             //Split msg
@@ -113,8 +113,20 @@ public class Transport {
         // System.out.println("");
     }
 
-    private void transport_layer_msg(int srcId,int dstID, String msg){
-        //TODO: transport_layer_msg()
+    public void transport_receive_from_network(char[] msg) {
+        // for (char y:msg) {
+        //     System.out.print(y);
+        // }
+        // System.out.println("");
+
+        String type=Character.toString(msg[0]);
+
+        if (type.equals("d")) {
+            String frame=this.getMsg(msg);
+            String src=Character.toString(msg[1]);
+            this.transport_output_all_received(src, frame);
+        }
+
     }
 
     private char[] data_messages(String srcId,String dstID, char[] msg){
@@ -179,5 +191,19 @@ public class Transport {
         }
         System.out.println("");
 
+    }
+
+    private void transport_output_all_received(String src,String msg){
+        //TODO:
+    }
+
+    private String getMsg(char[] msg){
+        
+        String frame="";
+        
+        for (int i=5;i<=(msg.length-1);i++) {
+            frame=frame+Character.toString(msg[i]);
+        }
+        return frame;
     }
 }

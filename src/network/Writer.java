@@ -4,17 +4,18 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 public class Writer {
-    private String pathname;
+  
 
-    public Writer(String pathname) {
-        this.pathname=pathname;
+    public Writer() {
+
     }
 
-    public void writeFile(String type, int channel, String secNum, String msg) {
+    //public void writeFile(String str, int channel, String secNum, String msg) {
+    public void writeFile(String str,String pathname) {
 
         try {
-            String str=type+" "+channel+" "+secNum+" "+msg;
-            BufferedWriter WriteFile = new BufferedWriter(new FileWriter(this.pathname,true));
+            //String str=type+" "+channel+" "+secNum+" "+msg;
+            BufferedWriter WriteFile = new BufferedWriter(new FileWriter(pathname,true));
             WriteFile.write("\r\n");
             WriteFile.write(str);
             WriteFile.close();

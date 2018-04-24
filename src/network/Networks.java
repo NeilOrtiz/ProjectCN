@@ -4,12 +4,14 @@ public class Networks {
     private Parent dad;
     private int secData;
     private Datalink datalink;
+    //private Transport transport;
 
 
     public Networks (Parent dad) {
         this.dad=dad;
         this.secData=00;
         this.datalink=new Datalink(dad);
+        //this.transport=new Transport(dad);
     }
 
     public void network_receive_from_transport(int channel, int sb, char[] msg,int dest,String srcId){
@@ -94,7 +96,16 @@ public class Networks {
     }
 
     public void network_receive_from_datalink(char[] msg, int neighbor_id) {
-        //TODO: Networks.network_receive_from_datalink()
+        Transport transport=new Transport(dad);
+        
+        String dest= Character.toString(msg[2]);
+
+        if (dad.myID.equals(dest)) {
+            transport.transport_receive_from_network(msg);
+        } else {
+            
+        }
+
     }
 
     // private byte[] pushBytes(byte[] frame, String input,int offset,int len){

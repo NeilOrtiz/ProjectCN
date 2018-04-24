@@ -40,7 +40,7 @@ public class Reader {
             ReadFile.close();
             
         } catch (Exception e) {
-            System.out.println(e + " in readFile()");
+            //System.out.println(e + " in readFile()");
         }
 
         return answer;

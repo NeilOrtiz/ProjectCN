@@ -82,15 +82,13 @@ public class Parent {
         
         routingTablePopulate(dad);
         channelsCreation(dad);
-        printreadOffset(dad);
+        //printreadOffset(dad);
         
         // Set<Integer> keys= dad.routingTable.keySet();
         // for (int key:keys) {
         //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
         // }
         skeleton(dad);
-
-        
     }
 
     public static void channelsCreation( Parent dad) {
@@ -138,7 +136,6 @@ public class Parent {
         if (dad.isMsg){
             transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
         }
-        
         
         for (int i=0;i<=dad.end;i++){
             datalink.datalink_receive_from_channel();
