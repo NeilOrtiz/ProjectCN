@@ -45,9 +45,9 @@ public class Datalink {
             String str=reader.readFile(pathname, dad);
 
             if (str.equals("null")){
-                //System.err.println("[Datalink] Esta vacio");
+                System.err.println("[Datalink] Esta vacio");
             } else {
-                //System.err.println("[Datalink] str: "+str);
+                System.err.println("[Datalink] str: "+str);
                 char[] msg1=this.convertToChar(str);
                 String type=String.valueOf(msg1[0]);
                 //System.err.println("[Datalink] type: "+msg1[0]);

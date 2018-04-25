@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class Transport {
     private Parent dad;
-    private int secData;
+    //public int secData;
     private Networks networks;
     public static final int WINDOW_SIZE=25;
 
 
     public Transport (Parent dad) {
         this.dad=dad;
-        this.secData=23;
+        //this.secData=23;
         this.networks=new Networks(dad);
     }
 
@@ -22,36 +22,39 @@ public class Transport {
         char[] msg_arr=msg.toCharArray();
         ArrayList<char[]> channel0 = new ArrayList<char[]>(4);
         ArrayList<char[]> channel1 = new ArrayList<char[]>(4);
-        boolean llego=false;
+        
 
         if (sizeMsg<=WINDOW_SIZE) {
-            secData++;
+            //secData++;
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             channel0.add(frame);
             
             //System.out.println("secData: "+secData);
-            if (dad.sb[0]==dad.ab[0]) {
-                //dad.sb[0]=(dad.sb[0]+1)%2;
-                dad.sb[0]=secData;
-                networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
-            }
+            // if (dad.sb[0]==dad.ab[0]) {
+            //     //dad.sb[0]=(dad.sb[0]+1)%2;
+            //     dad.sb[0]=dad.secData;
+            //     networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
+            // }
 
-            while (!llego) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    System.out.println(ex.getStackTrace());
-                }
+            dad.sb[0]=dad.secData;
+            networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
 
-                System.out.println("[transport_send_string] dad.sb[0]: "+dad.sb[0]+", dad.ab[0]: "+dad.ab[0]);
-                if (dad.sb[0]==dad.ab[0]) {
-                    llego=true;
-                } else {
-                    networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
-                }
-            }
+            // while (!llego) {
+            //     try {
+            //         Thread.sleep(5000);
+            //     } catch (InterruptedException ex) {
+            //         System.out.println(ex.getStackTrace());
+            //     }
 
-            System.out.println("5 seconds to finish");
+            //     System.out.println("[transport_send_string] dad.sb[0]: "+dad.sb[0]+", dad.ab[0]: "+dad.ab[0]);
+            //     if (dad.sb[0]==dad.ab[0]) {
+            //         llego=true;
+            //     } else {
+            //         networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
+            //     }
+            // }
+
+            // System.out.println("5 seconds to finish");
 
         } else {
             //Split msg
@@ -83,7 +86,7 @@ public class Transport {
                 } else {
                     channel1.add(frame);
                 }
-                secData++;
+                //secData++;
                 //networks.network_receive_from_transport(frame, nmsg.length, Integer.parseInt(dstID),dad.myID);
             }
             // System.out.println("[transport_send_string] longitud channel0: "+channel0.size());
@@ -182,11 +185,11 @@ public class Transport {
         msgs[0]='d';
         msgs[1]=srcId.charAt(0);
         msgs[2]=dstID.charAt(0);
-        if (secData<10) {
+        if (dad.secData<10) {
             msgs[3]='0';
-            msgs[4]=Integer.toString(secData).charAt(0) ;
+            msgs[4]=Integer.toString(dad.secData).charAt(0) ;
         } else {
-            String ssecData=Integer.toString(secData);
+            String ssecData=Integer.toString(dad.secData);
             char[] cssecData=ssecData.toCharArray();
             int iPart=Integer.parseInt(Character.toString(cssecData[0]));
             int fPart=Integer.parseInt(Character.toString(cssecData[1]));

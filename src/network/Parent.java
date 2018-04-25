@@ -19,6 +19,7 @@ public class Parent {
     public int[] ab;
     public int end;
     public boolean isMsg;
+    public int secData;
 
     public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end,boolean isMsg) {
         this.myID=myID;
@@ -32,6 +33,7 @@ public class Parent {
         this.ab=new int[] {0,0};
         this.end=end;
         this.isMsg=isMsg;
+        this.secData=23;
     }
 
     
@@ -133,18 +135,32 @@ public class Parent {
 
         Transport transport = new Transport(dad);
         Datalink datalink=new Datalink(dad);
-        if (dad.isMsg){
-            transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
-        }
+        boolean llego=false;
+        int counter=0;
+        
         
         for (int i=0;i<=dad.end;i++){
+
+            if (dad.isMsg){
+                if ((!llego)&&((counter%5)==0)) {
+                    transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+                }
+
+
+                
+            }
+
             datalink.datalink_receive_from_channel();
+            if (dad.sb[0]==dad.ab[0]) {
+                llego=true;
+            }
             //System.out.println("[Parent] life left: "+(dad.end-i));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 System.out.println(ex.getStackTrace());
             }
+            counter++;
         }
     }
 
