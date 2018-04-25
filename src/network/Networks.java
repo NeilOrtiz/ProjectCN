@@ -146,7 +146,12 @@ public class Networks {
     private int nextHop(int dest){
         int temp=-1;
 
-        temp=dad.routingTable.get(dest);
+        try {
+            temp=dad.routingTable.get(dest);
+        } catch (NullPointerException ex) {
+            //System.err.println("[nextHop] dest: "+dest);
+            temp=-1;
+        }
 
         return temp;
     }

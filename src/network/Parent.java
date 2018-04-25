@@ -144,10 +144,7 @@ public class Parent {
             if (dad.isMsg){
                 if ((!llego)&&((counter%5)==0)) {
                     transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
-                }
-
-
-                
+                }                
             }
 
             datalink.datalink_receive_from_channel();
