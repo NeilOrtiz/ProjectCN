@@ -28,9 +28,11 @@ public class Transport {
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             channel0.add(frame);
             secData++;
+            System.out.println("secData: "+secData);
             if (dad.sb[0]==dad.ab[0]) {
-                dad.sb[0]=(dad.sb[0]+1)%2;
-                networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
+                //dad.sb[0]=(dad.sb[0]+1)%2;
+                dad.sb[0]=secData;
+                networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
             }
 
             // while (!llego) {
@@ -113,7 +115,8 @@ public class Transport {
         // System.out.println("");
     }
 
-    public void transport_receive_from_network(char[] msg) {
+    public void transport_receive_from_network(char[] msg,char channel) {
+        // System.out.println("[transport_receive_from_network]");
         // for (char y:msg) {
         //     System.out.print(y);
         // }
@@ -125,6 +128,46 @@ public class Transport {
             String frame=this.getMsg(msg);
             String src=Character.toString(msg[1]);
             this.transport_output_all_received(src, frame);
+
+            String dstID=Character.toString(msg[2]);
+            String seqNum1=Character.toString(msg[3]);
+            String seqNum2=Character.toString(msg[4]);
+            char[] ack=this.ack_message(src, dstID, seqNum1, seqNum2);
+            //System.out.println("Channel: "+channel);
+            //System.out.println("secData: "+Integer.parseInt(seqNum1+seqNum2));
+            //System.out.println("dad.ab[1]: "+dad.ab[1]);
+            //int secuenica=Integer.parseInt(seqNum1+seqNum2);
+            int chan=Integer.parseInt(Character.toString(channel)) ;
+            
+            //dad.modAc(chan, secuenica);
+            //dad.ab[channel]=secuenica;
+            //System.out.println("Channel2: "+channel);
+            networks.network_receive_from_transport(chan, 0, ack, Integer.parseInt(src), dad.myID,"a");
+
+            // for (char y:ack) {
+            //     System.out.print(y);
+            // }
+            // System.out.println("");
+            
+        } else {
+            //System.out.println("Este es un ACk");
+
+            String seqNum1=Character.toString(msg[6]);
+            String seqNum2=Character.toString(msg[7]);
+            int secuenica=Integer.parseInt(seqNum1+seqNum2);
+
+            int canal= Integer.parseInt(Character.toString(msg[4]));
+            dad.modAc(canal, secuenica);
+
+            System.out.println("ab number: "+dad.ab[canal]);
+            System.out.println("sb number: "+dad.sb[canal]);
+
+
+            // for (char y:msg) {
+            //     System.out.print(y);
+            // }
+            // System.out.println("");
+
         }
 
     }
@@ -160,8 +203,17 @@ public class Transport {
         return msgs;
     }
 
-    private void ack_messages() {
-        //TODO: ack_messages()
+    private char[] ack_message(String srcId,String dstID,String seqNum1,String seqNum2) {
+
+        char[] msgs=new char[5];
+
+        msgs[0]='a';
+        msgs[1]=srcId.charAt(0);
+        msgs[2]=dstID.charAt(0);
+        msgs[3]=seqNum1.charAt(0);
+        msgs[4]=seqNum2.charAt(0);
+        return msgs;
+
     }
 
     private byte[] pushBytes(byte[] frame, String input,int offset){
@@ -195,6 +247,10 @@ public class Transport {
 
     private void transport_output_all_received(String src,String msg){
         //TODO:
+        Writer writer = new Writer();
+        String pathname=".//"+"node"+dad.myID+"received"+".txt";
+        String str= "From "+src+" received: "+msg;
+        writer.writeFile(str, pathname);
     }
 
     private String getMsg(char[] msg){

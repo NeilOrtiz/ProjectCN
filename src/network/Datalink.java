@@ -15,20 +15,23 @@ public class Datalink {
         String fileName=".//"+"from"+dad.myID+"to"+dest+".txt";
         Writer write = new Writer();
 
-        char tp=(char) msg[6];
-        if (tp=='d') {
-            type="data";
-        } else {
-            type="ack";
-        }
-
         char secNum1= ((char) msg[2]);
         char secNum2= ((char) msg[3]);
         String secNum=Character.toString(secNum1)+Character.toString(secNum2);
         char[] ntwMsg=this.getntwMsg(msg);
         String msgStuffing=this.stuffing(ntwMsg);
-        String str=type+" "+channel+" "+secNum+" "+msgStuffing;
-        write.writeFile(str,fileName);
+
+        char tp=(char) msg[6];
+        if (tp=='d') {
+            type="data";
+            String str=type+" "+channel+" "+secNum+" "+msgStuffing;
+            write.writeFile(str,fileName);
+        } else {
+            type="ack";
+            //System.out.println("[datalink_receive_from_network] channel: "+channel);
+            String str=type+" "+channel+" "+secNum;
+            write.writeFile(str,fileName);
+        }
     }
 
     public void datalink_receive_from_channel(){
@@ -44,21 +47,38 @@ public class Datalink {
             if (str.equals("null")){
                 //System.err.println("[Datalink] Esta vacio");
             } else {
-                //System.err.println("[Datalink] NO esta vacio");
+                //System.err.println("[Datalink] str: "+str);
                 char[] msg1=this.convertToChar(str);
+                String type=String.valueOf(msg1[0]);
+                //System.err.println("[Datalink] type: "+msg1[0]);
+
+                if (type.equals("d")) {
+                    //System.out.println("It is DATA");
+                    char channel=msg1[5];
+                    char[] msg=this.unstuffing(msg1);
+                    networks.network_receive_from_datalink(msg, Integer.parseInt(x),channel,type);
+                } else {
+                    //System.out.println("It is ACK");
+                    char channel=msg1[4];
+                    char[] secNum=new char[2];
+                    secNum[0]=msg1[6];
+                    secNum[1]=msg1[7];
+                    networks.network_receive_from_datalink(msg1, Integer.parseInt(x),channel,type);
+                }
                 //char[] msg2=this.getdtlMsg(msg1);
                 
                 // for (char y:msg1) {
                 //     System.out.print(y);
                 // }
                 // System.out.println("");
-                char[] msg=this.unstuffing(msg1);
+
+                
                 // for (char y:msg) {
                 //     System.out.print(y);
                 // }
                 // System.out.println("");
 
-                networks.network_receive_from_datalink(msg, Integer.parseInt(x));
+                
             }
         }
         

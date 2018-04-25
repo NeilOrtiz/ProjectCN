@@ -156,4 +156,8 @@ public class Parent {
         }
     }
 
+    public void modAc(int index, int newAc) {
+        this.ab[index]=newAc;
+    }
+
 }
