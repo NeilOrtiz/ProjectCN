@@ -9,7 +9,7 @@ public class Networks {
 
     public Networks (Parent dad) {
         this.dad=dad;
-        this.secData=00;
+        this.secData=31;
         this.datalink=new Datalink(dad);
         //this.transport=new Transport(dad);
     }

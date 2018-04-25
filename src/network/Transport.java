@@ -11,7 +11,7 @@ public class Transport {
 
     public Transport (Parent dad) {
         this.dad=dad;
-        this.secData=0;
+        this.secData=23;
         this.networks=new Networks(dad);
     }
 
@@ -25,31 +25,33 @@ public class Transport {
         boolean llego=false;
 
         if (sizeMsg<=WINDOW_SIZE) {
+            secData++;
             char[] frame = this.data_messages(srcId, dstID, msg.toCharArray());
             channel0.add(frame);
-            secData++;
-            System.out.println("secData: "+secData);
+            
+            //System.out.println("secData: "+secData);
             if (dad.sb[0]==dad.ab[0]) {
                 //dad.sb[0]=(dad.sb[0]+1)%2;
                 dad.sb[0]=secData;
                 networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
             }
 
-            // while (!llego) {
-            //     try {
-            //         Thread.sleep(5000);
-            //     } catch (InterruptedException ex) {
-            //         System.out.println(ex.getStackTrace());
-            //     }
+            while (!llego) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getStackTrace());
+                }
 
-            //     if (dad.sb[0]==dad.ab[0]) {
-            //         llego=true;
-            //     } else {
-            //         networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID);
-            //     }
-            // }
+                System.out.println("[transport_send_string] dad.sb[0]: "+dad.sb[0]+", dad.ab[0]: "+dad.ab[0]);
+                if (dad.sb[0]==dad.ab[0]) {
+                    llego=true;
+                } else {
+                    networks.network_receive_from_transport(0,dad.sb[0],frame, Integer.parseInt(dstID),dad.myID,"d");
+                }
+            }
 
-            //System.out.println("5 seconds to finish");
+            System.out.println("5 seconds to finish");
 
         } else {
             //Split msg
