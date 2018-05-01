@@ -2,6 +2,7 @@ package network;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -25,7 +26,7 @@ public class Reader {
             int temp=0;
             //System.out.println("[readFile] 1");
             while ((str = ReadFile.readLine()) != null) {
-                ++temp;
+                
                 //System.out.println("[readFile] pathname: "+pathname);
                 if (temp > dad.readOffset.get(pathname)) {
                     // String filePath = "node"+dad.myID+"received"+".txt";
@@ -34,13 +35,16 @@ public class Reader {
                     // WriteFile.write("\r\n");
                     // WriteFile.close();
                     answer=str;
+                    dad.readOffset.replace(pathname, temp);
+                    break;
                 }
+                ++temp;
             }
-            dad.readOffset.replace(pathname, temp);
+            
             ReadFile.close();
             
         } catch (Exception e) {
-            //System.out.println(e + " in readFile()");
+            System.out.println(e + " in readFile()");
         }
 
         return answer;

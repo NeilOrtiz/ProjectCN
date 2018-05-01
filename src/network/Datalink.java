@@ -41,13 +41,14 @@ public class Datalink {
         Reader reader=new Reader();
 
         for (String x:ngbs) {
+            //String filename="from"+x+"to"+dad.myID+".txt";
             String pathname=".//"+"from"+x+"to"+dad.myID+".txt";            
             String str=reader.readFile(pathname, dad);
 
             if (str.equals("null")){
-                //System.err.println("[Datalink] Esta vacio");
+                System.err.println("[Datalink] Esta vacio");
             } else {
-                //System.err.println("[Datalink] str: "+str);
+                System.err.println("[Datalink] str: "+str);
                 char[] msg1=this.convertToChar(str);
                 String type=String.valueOf(msg1[0]);
                 //System.err.println("[Datalink] type: "+msg1[0]);
@@ -56,7 +57,16 @@ public class Datalink {
                     //System.out.println("It is DATA");
                     char channel=msg1[5];
                     char[] msg=this.unstuffing(msg1);
-                    networks.network_receive_from_datalink(msg, Integer.parseInt(x),channel,type);
+                    char[] secNum=new char[2];
+                    secNum[0]=msg[3];
+                    secNum[1]=msg[4];
+                    String seqNum=Character.toString(secNum[0])+Character.toString(secNum[1]);
+                    int sq=Integer.parseInt(seqNum);
+                    int ch= Character.getNumericValue(channel);
+                    if (sq>dad.ackTable.get(ch)) {
+                        networks.network_receive_from_datalink(msg, Integer.parseInt(x),channel,type);
+                        dad.ackTable.put(new Integer(ch), sq);
+                    }
                 } else {
                     //System.out.println("It is ACK");
                     char channel=msg1[4];
@@ -64,6 +74,7 @@ public class Datalink {
                     secNum[0]=msg1[6];
                     secNum[1]=msg1[7];
                     networks.network_receive_from_datalink(msg1, Integer.parseInt(x),channel,type);
+                    
                 }
                 //char[] msg2=this.getdtlMsg(msg1);
                 

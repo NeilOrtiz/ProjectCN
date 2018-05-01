@@ -14,6 +14,7 @@ public class Parent {
     public String msg;
     public String ngbs;
     public Hashtable<Integer,Integer> routingTable;
+    public Hashtable<Integer,Integer> ackTable;
     public Hashtable<String,Integer> readOffset;
     public int[] sb;
     public int[] ab;
@@ -28,6 +29,7 @@ public class Parent {
         this.msg=msg;
         this.ngbs=ngbs;
         this.routingTable=new Hashtable<Integer,Integer>();
+        this.ackTable=new Hashtable<Integer,Integer>();
         this.readOffset=new Hashtable<String,Integer>();
         this.sb=new int[] {0,0};
         this.ab=new int[] {0,0};
@@ -84,13 +86,29 @@ public class Parent {
         
         routingTablePopulate(dad);
         channelsCreation(dad);
+        ackTableInitialization(dad);
+
+        // try {
+        //     Thread.sleep(30000);
+        // } catch (InterruptedException ex) {
+        //     System.out.println(ex.getStackTrace());
+        // }
+        
         //printreadOffset(dad);
         
         // Set<Integer> keys= dad.routingTable.keySet();
         // for (int key:keys) {
         //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
         // }
+
         skeleton(dad);
+        // if (dstID.equals(ngb)||dstID.equals(myID)) {
+        //     System.out.println("SI");
+        //     skeleton(dad,dad.dstID);
+        // } else {
+        //     System.out.println("NO");
+        // }
+        
     }
 
     public static void channelsCreation( Parent dad) {
@@ -104,7 +122,9 @@ public class Parent {
             
             try {
                 if (file.createNewFile()){
-                    //System.out.println("File is created!");
+                    System.out.println("File is created!");
+                    file.setReadable(true);
+                    file.setWritable(true);
                 }else{
                     //System.out.println("File already exists.");
                 }
@@ -127,6 +147,13 @@ public class Parent {
         }
     }
 
+    public static void ackTableInitialization(Parent dad){
+        for (int i=0;i<=1;i++){
+            dad.ackTable.put(i, 0);
+        }
+
+    }
+
     public void terminate() {
         System.exit(1);
     }
@@ -142,15 +169,21 @@ public class Parent {
         for (int i=0;i<=dad.end;i++){
 
             if (dad.isMsg){
-                if ((!llego)&&((counter%5)==0)) {
-                    transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+                //if ((!llego)&&((counter%5)==0)) {
+                if (!llego) {
+                    if ((counter%5)==0) {
+                        System.out.println("i1= "+i);
+                        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+                    }
+                    
                 }                
             }
-
+            System.out.println("i2= "+i);
             datalink.datalink_receive_from_channel();
             if (dad.sb[0]==dad.ab[0]) {
                 llego=true;
             }
+            System.out.println("llego: "+llego);
             //System.out.println("[Parent] life left: "+(dad.end-i));
             try {
                 Thread.sleep(1000);
