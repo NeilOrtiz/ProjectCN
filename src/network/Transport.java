@@ -164,8 +164,8 @@ public class Transport {
             int canal= Integer.parseInt(Character.toString(msg[4]));
             dad.modAc(canal, secuenica);
 
-            System.out.println("ab number: "+dad.ab[canal]);
-            System.out.println("sb number: "+dad.sb[canal]);
+            //System.out.println("ab number: "+dad.ab[canal]);
+            //System.out.println("sb number: "+dad.sb[canal]);
 
 
             // for (char y:msg) {

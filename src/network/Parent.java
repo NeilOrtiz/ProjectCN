@@ -122,7 +122,7 @@ public class Parent {
             
             try {
                 if (file.createNewFile()){
-                    System.out.println("File is created!");
+                    //System.out.println("File is created!");
                     file.setReadable(true);
                     file.setWritable(true);
                 }else{
@@ -169,20 +169,19 @@ public class Parent {
         for (int i=0;i<=dad.end;i++){
 
             if (dad.isMsg){
-                //if ((!llego)&&((counter%5)==0)) {
                 if (!llego) {
                     if ((counter%5)==0) {
-                        System.out.println("i1= "+i);
+                        //System.out.println("i1= "+i);
                         transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
                     }
                 }                
             }
-            System.out.println("i2= "+i);
+            //System.out.println("i2= "+i);
             datalink.datalink_receive_from_channel();
             if (dad.sb[0]==dad.ab[0]) {
                 llego=true;
             }
-            System.out.println("llego: "+llego);
+            //System.out.println("llego: "+llego);
             //System.out.println("[Parent] life left: "+(dad.end-i));
             try {
                 Thread.sleep(1000);
