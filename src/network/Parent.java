@@ -88,11 +88,11 @@ public class Parent {
         channelsCreation(dad);
         ackTableInitialization(dad);
 
-        // try {
-        //     Thread.sleep(30000);
-        // } catch (InterruptedException ex) {
-        //     System.out.println(ex.getStackTrace());
-        // }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println(ex.getStackTrace());
+        }
         
         //printreadOffset(dad);
         
@@ -175,7 +175,6 @@ public class Parent {
                         System.out.println("i1= "+i);
                         transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
                     }
-                    
                 }                
             }
             System.out.println("i2= "+i);
