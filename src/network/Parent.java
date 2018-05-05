@@ -1,6 +1,7 @@
 package network;
 
 import java.util.Hashtable;
+import java.util.Random;
 import java.util.Set;
 //import java.util.Set;
 //import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Parent {
     public int secData;
     public int seqNwt;
 
-    public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end,boolean isMsg) {
+    public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end,boolean isMsg,int secData) {
         this.myID=myID;
         this.duration=duration;
         this.dstID=dstID;
@@ -36,7 +37,7 @@ public class Parent {
         this.ab=new int[] {0,0};
         this.end=end;
         this.isMsg=isMsg;
-        this.secData=23;
+        this.secData=secData;
         this.seqNwt=31;
     }
 
@@ -71,14 +72,14 @@ public class Parent {
         ngb=args[4];
         }
         
-        // if (!args[5].isEmpty()){
-        //     ng2=Integer.parseInt(args[5]);
-        // } else {
-        //     ng2=-1;
-        // }
         
+        int max=25;
+        int min=0;
+        int diff=max-min;
+        Random rn = new Random();
+        int seq=rn.nextInt(diff+1)+min;
         
-        Parent dad = new Parent(myID, duration, dstID, msg, ngb,duration,m);
+        Parent dad = new Parent(myID, duration, dstID, msg, ngb,duration,m,seq);
         Shutdown shutdown=new Shutdown(dad);
         shutdown.start();
         //dad.routingTable.put();
