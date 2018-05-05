@@ -169,6 +169,21 @@ public class Datalink {
                 startMsg=false;
             }
         }
-        return ans;
+
+        int contador=0;
+        for (char letra:ans) {
+
+            String le=Character.toString(letra);
+            byte[] leByte=le.getBytes();
+            if (leByte[0]==0) {
+                contador++;
+            }
+        }
+        char [] ans2=new char [ans.length-contador];
+
+        for (int j=0;j<=ans2.length-1;j++) {
+            ans2[j]=ans[j];
+        }
+        return ans2;
     }
 }

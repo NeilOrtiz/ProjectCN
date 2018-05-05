@@ -185,9 +185,16 @@ public class Networks {
             } else {
                 // Routing
 
-                // byte[] frame=this.n_data_messages(srcId,Integer.parseInt(dest) , msg,msg.length);
+                String[] ngbs=dad.ngbs.split(",");
 
-                // datalink.datalink_receive_from_network(channel,9,frame, 8);
+                for (String ngb:ngbs) {
+                    byte[] frame=this.n_data_messages(dad.myID,Integer.parseInt(ngb) , msg,msg.length);
+                    datalink.datalink_receive_from_network(Integer.parseInt(Character.toString(channel)) ,9,frame, 8);
+                }
+
+                
+                //byte[] frame=this.n_data_messages(srcId,Integer.parseInt(dest) , msg,msg.length);
+                //datalink.datalink_receive_from_network(Integer.parseInt(Character.toString(channel)) ,9,frame, 8);
                 // this.printBytes(msg);
             }
 
