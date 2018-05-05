@@ -38,7 +38,6 @@ public class Parent {
         this.secData=23;
     }
 
-    
     public static void main (String[] args) {
         int duration=-1;
         String msg=null,myID=null,dstID=null,ngb=null;
@@ -93,21 +92,24 @@ public class Parent {
         } catch (InterruptedException ex) {
             System.out.println(ex.getStackTrace());
         }
-        
-        //printreadOffset(dad);
-        
-        // Set<Integer> keys= dad.routingTable.keySet();
-        // for (int key:keys) {
-        //     System.out.println("key: "+key+", value: "+dad.routingTable.get(key));
-        // }
 
-        skeleton(dad);
-        // if (dstID.equals(ngb)||dstID.equals(myID)) {
-        //     System.out.println("SI");
-        //     skeleton(dad,dad.dstID);
-        // } else {
-        //     System.out.println("NO");
-        // }
+        boolean isflood=isMyNeighbor(dad);
+
+        if ((isflood)) {
+            Skeleton skeleton = new Skeleton(dad, dstID, msg);
+            skeleton.start();
+        } else {
+            if (!dad.isMsg) {
+                Skeleton skeleton = new Skeleton(dad, dstID, msg);
+                skeleton.start();
+            } else {
+                System.out.println("Flood is necesary");
+            }
+            
+        }
+
+        
+        //skeleton(dad);
         
     }
 
@@ -158,39 +160,36 @@ public class Parent {
         System.exit(1);
     }
 
-    public static void skeleton(Parent dad) {
+    // public static void skeleton(Parent dad) {
 
-        Transport transport = new Transport(dad);
-        Datalink datalink=new Datalink(dad);
-        boolean llego=false;
-        int counter=0;
+    //     Transport transport = new Transport(dad);
+    //     Datalink datalink=new Datalink(dad);
+    //     boolean llego=false;
+    //     int counter=0;
         
-        
-        for (int i=0;i<=dad.end;i++){
+    //     for (int i=0;i<=dad.end;i++){
 
-            if (dad.isMsg){
-                if (!llego) {
-                    if ((counter%5)==0) {
-                        //System.out.println("i1= "+i);
-                        transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
-                    }
-                }                
-            }
-            //System.out.println("i2= "+i);
-            datalink.datalink_receive_from_channel();
-            if (dad.sb[0]==dad.ab[0]) {
-                llego=true;
-            }
-            //System.out.println("llego: "+llego);
-            //System.out.println("[Parent] life left: "+(dad.end-i));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                System.out.println(ex.getStackTrace());
-            }
-            counter++;
-        }
-    }
+    //         if (dad.isMsg){
+    //             if (!llego) {
+    //                 if ((counter%5)==0) {
+    //                     transport.transport_send_string(dad.myID,dad.dstID,dad.msg);
+    //                 }
+    //             }                
+    //         }
+
+    //         datalink.datalink_receive_from_channel();
+
+    //         if (dad.sb[0]==dad.ab[0]) {
+    //             llego=true;
+    //         }
+    //         try {
+    //             Thread.sleep(1000);
+    //         } catch (InterruptedException ex) {
+    //             System.out.println(ex.getStackTrace());
+    //         }
+    //         counter++;
+    //     }
+    // }
 
     public static void printreadOffset(Parent dad){
         Set<String> keys=dad.readOffset.keySet();
@@ -202,6 +201,20 @@ public class Parent {
 
     public void modAc(int index, int newAc) {
         this.ab[index]=newAc;
+    }
+
+    public static boolean isMyNeighbor(Parent dad) {
+        boolean answer = false;
+
+        String[] ngbs=dad.ngbs.split(",");
+
+        for (String ngb:ngbs) {
+            if (ngb.equals(dad.dstID)) {
+                answer=true;
+            } 
+        }
+
+        return answer;
     }
 
 }

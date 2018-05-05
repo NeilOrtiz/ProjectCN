@@ -8,7 +8,6 @@ public class Transport {
     private Networks networks;
     public static final int WINDOW_SIZE=25;
 
-
     public Transport (Parent dad) {
         this.dad=dad;
         //this.secData=23;
@@ -22,7 +21,6 @@ public class Transport {
         char[] msg_arr=msg.toCharArray();
         ArrayList<char[]> channel0 = new ArrayList<char[]>(4);
         ArrayList<char[]> channel1 = new ArrayList<char[]>(4);
-        
 
         if (sizeMsg<=WINDOW_SIZE) {
             //secData++;
