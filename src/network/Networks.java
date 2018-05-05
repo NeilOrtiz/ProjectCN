@@ -2,14 +2,14 @@ package network;
 
 public class Networks {
     private Parent dad;
-    private int secData;
+    //private int secData;
     private Datalink datalink;
     //private Transport transport;
 
 
     public Networks (Parent dad) {
         this.dad=dad;
-        this.secData=31;
+        //this.secData=31;
         this.datalink=new Datalink(dad);
         //this.transport=new Transport(dad);
     }
@@ -60,13 +60,13 @@ public class Networks {
         //System.out.println("frame[0]: "+frame[0]);
         //System.out.println("msgs[1]: "+frame[1]);
 
-        if (secData<10) {
+        if (dad.seqNwt<10) {
             frame[2]="0".getBytes()[0];
-            frame[3]=Integer.toString(secData).getBytes()[0];
+            frame[3]=Integer.toString(dad.seqNwt).getBytes()[0];
             //frame=this.pushBytes(frame, "0", 2, frame.length);
             //frame=this.pushBytes(frame, Integer.toString(secData), 3, frame.length);
         } else {
-            String ssecData=Integer.toString(secData);
+            String ssecData=Integer.toString(dad.seqNwt);
             char[] cssecData=ssecData.toCharArray();
             int iPart=Integer.parseInt(Character.toString(cssecData[0]));
             int fPart=Integer.parseInt(Character.toString(cssecData[1]));
@@ -91,7 +91,8 @@ public class Networks {
             frame[counter]=Character.toString(x).getBytes()[0];
             counter++;
         }
-        this.secData++;
+        dad.seqNwt++;
+        //this.secData++;
         //System.out.println("len: "+leng);
         //System.out.println("frame.length: "+frame.length);
         //this.printBytes(frame);
@@ -177,13 +178,17 @@ public class Networks {
         if (type.equals("d")) {
 
             String dest= Character.toString(msg[2]);
+            String srcId= Character.toString(msg[1]);
 
             if (dad.myID.equals(dest)) {
                 transport.transport_receive_from_network(msg,channel);
             } else {
                 // Routing
-                //System.out.println("Routing: "+msg);
-                this.printBytes(msg);
+
+                // byte[] frame=this.n_data_messages(srcId,Integer.parseInt(dest) , msg,msg.length);
+
+                // datalink.datalink_receive_from_network(channel,9,frame, 8);
+                // this.printBytes(msg);
             }
 
         } else {

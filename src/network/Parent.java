@@ -21,6 +21,7 @@ public class Parent {
     public int end;
     public boolean isMsg;
     public int secData;
+    public int seqNwt;
 
     public Parent (String myID, int duration,String dstID, String msg, String ngbs,int end,boolean isMsg) {
         this.myID=myID;
@@ -36,6 +37,7 @@ public class Parent {
         this.end=end;
         this.isMsg=isMsg;
         this.secData=23;
+        this.seqNwt=31;
     }
 
     public static void main (String[] args) {
