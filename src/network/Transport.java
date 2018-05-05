@@ -146,6 +146,9 @@ public class Transport {
             //dad.ab[channel]=secuenica;
             //System.out.println("Channel2: "+channel);
             networks.network_receive_from_transport(chan, 0, ack, Integer.parseInt(src), dad.myID,"a");
+            String seqNum=seqNum1+seqNum2;
+            int sq=Integer.parseInt(seqNum);
+            dad.ackTable.put(new Integer(chan), sq);
 
             // for (char y:ack) {
             //     System.out.print(y);

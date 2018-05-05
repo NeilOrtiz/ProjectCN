@@ -95,18 +95,29 @@ public class Parent {
 
         boolean isflood=isMyNeighbor(dad);
 
-        if ((isflood)) {
-            Skeleton skeleton = new Skeleton(dad, dstID, msg);
-            skeleton.start();
-        } else {
-            if (!dad.isMsg) {
-                Skeleton skeleton = new Skeleton(dad, dstID, msg);
-                skeleton.start();
-            } else {
-                System.out.println("Flood is necesary");
-            }
+        Skeleton skeleton = new Skeleton(dad, dstID, msg);
+        skeleton.start();
+
+
+        // if ((isflood)) {
+        //     Skeleton skeleton = new Skeleton(dad, dstID, msg);
+        //     skeleton.start();
+
+        // } else {
+        //     if (!dad.isMsg) {
+        //         Skeleton skeleton = new Skeleton(dad, dstID, msg);
+        //         skeleton.start();
+        //     } else {
+
+        //         String[] ngbs=dad.ngbs.split(",");
+
+        //         for (String dst:ngbs) {
+        //             Skeleton skeleton = new Skeleton(dad, dst, msg);
+        //             skeleton.start();
+        //         }
+        //     }
             
-        }
+        // }
 
         
         //skeleton(dad);

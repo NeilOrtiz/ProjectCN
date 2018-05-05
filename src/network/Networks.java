@@ -17,9 +17,24 @@ public class Networks {
     public void network_receive_from_transport(int channel, int sb, char[] msg,int dest,String srcId,String typeMsg){
 
         if (typeMsg.equals("d")) {
-            byte[] frame=this.n_data_messages(srcId, dest, msg,msg.length);
-            int next_hop=this.nextHop(dest);
-            datalink.datalink_receive_from_network(channel,sb,frame, next_hop);
+
+            boolean isRouting=this.isMyNeighbor(dad);
+
+            if (isRouting) {
+                byte[] frame=this.n_data_messages(srcId, dest, msg,msg.length);
+                int next_hop=this.nextHop(dest);
+                datalink.datalink_receive_from_network(channel,sb,frame, next_hop);
+            } else {
+                String[] ngbs=dad.ngbs.split(",");
+
+                for (String ngb:ngbs) {
+                    byte[] frame=this.n_data_messages(srcId,Integer.parseInt(ngb), msg,msg.length);
+                    int next_hop=this.nextHop(dest);
+                    datalink.datalink_receive_from_network(channel,sb,frame, next_hop);
+                }
+                
+            }
+            
         } else {
             String seqNum1=Character.toString(msg[3]);
             String seqNum2=Character.toString(msg[4]);
@@ -127,16 +142,16 @@ public class Networks {
         return frame;
     }
 
-    private void printBytes(byte[] frame) {
+    private void printBytes(char[] frame) {
 
-        for (byte x:frame) {
+        for (char x:frame) {
             System.out.print(x);
             System.out.print(" ");
         }
 
         System.out.println("");
 
-        for (byte x:frame) {
+        for (char x:frame) {
         	System.out.print((char)x);
         }
         System.out.println("");
@@ -167,6 +182,8 @@ public class Networks {
                 transport.transport_receive_from_network(msg,channel);
             } else {
                 // Routing
+                //System.out.println("Routing: "+msg);
+                this.printBytes(msg);
             }
 
         } else {
@@ -177,16 +194,17 @@ public class Networks {
 
     }
 
-    // private byte[] pushBytes(byte[] frame, String input,int offset,int len){
-    //     byte[] temp=new byte[len+input.length()];
-    //     byte[] bytesFrame=input.getBytes();
-        
-    //     int counter=0;
-    //     for (int i=offset;i<(bytesFrame.length+offset);i++) {
-    //     	frame[i]=bytesFrame[counter];
-    //         counter++;
-    //     }
-    //     temp=frame;
-    //     return temp;
-    // }
+    public boolean isMyNeighbor(Parent dad) {
+        boolean answer = false;
+
+        String[] ngbs=dad.ngbs.split(",");
+
+        for (String ngb:ngbs) {
+            if (ngb.equals(dad.dstID)) {
+                answer=true;
+            } 
+        }
+
+        return answer;
+    }
 }

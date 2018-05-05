@@ -65,7 +65,7 @@ public class Datalink {
                     int ch= Character.getNumericValue(channel);
                     if (sq>dad.ackTable.get(ch)) {
                         networks.network_receive_from_datalink(msg, Integer.parseInt(x),channel,type);
-                        dad.ackTable.put(new Integer(ch), sq);
+                        //dad.ackTable.put(new Integer(ch), sq);
                     }
                 } else {
                     //System.out.println("It is ACK");
